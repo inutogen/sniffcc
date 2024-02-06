@@ -26,7 +26,7 @@ if args[1] == "tonif" then
 	until done == true
 	nfp.close()
 	nif.close()
-elseif args[2] == "fromnif" then
+elseif args[1] == "fromnif" then
 	local nif = fs.open(args[2], "rb")
 	local nfp = fs.open(args[3], "w")
 	local done = false
@@ -47,6 +47,8 @@ elseif args[2] == "fromnif" then
 			nfp.write("\n")
 		end
 	until done == true
+	nfp.close()
+	nif.close()
 else
 	print("")
 end
