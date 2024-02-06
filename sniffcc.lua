@@ -1,5 +1,6 @@
 local args = {...}
 --binary = textutils.unserialize("0x"..a..b)
+--local hexValue = string.format("%02X", string.byte(byte))
 if args[1] == "tonif" then
 	local nfp = fs.open(args[2], "r")
 	local nif = fs.open(args[3], "wb")
@@ -25,4 +26,27 @@ if args[1] == "tonif" then
 	until done == true
 	nfp.close()
 	nif.close()
+elseif args[2] == "fromnif" then
+	local nif = fs.open(args[2], "rb")
+	local nfp = fs.open(args[3], "w")
+	local done = false
+	repeat
+		local data = nif.readLine()
+		if data == nil then
+			done = true
+		else
+			local char_table = {}
+    		for i = 1, #data do
+        		table.insert(char_table, data:sub(i, i))
+    		end
+			for i,v in ipairs(char_table) do
+				local hexValue = string.format("%02X", string.byte(v))
+				pa, pb = hexValue:sub(1, 1), hexValue:sub(2, 2)
+				nfp.write(pa..pb)
+			end
+			nfp.write("\n")
+		end
+	until done == true
+else
+	print("")
 end
